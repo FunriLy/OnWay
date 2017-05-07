@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="qg.fangrui.boot.dao.RouteDao">
+    <!--目的：为Dao接口方法提供SQL语句-->
+
+    <!--映射实体对象-->
+    <resultMap id="RouteResultMap" type="qg.fangrui.boot.model.Route">
+        <id property="id" column="id" />
+        <result property="userid" column="userid" />
+        <result property="mStartName" column="mStartName" />
+        <result property="mEndName" column="mEndName" />
+        <result property="selectedRouteType" column="selectedRouteType" />
+        <result property="xPath" column="xPath" />
+        <result property="yPath" column="yPath" />
+        <result property="mStartX" column="mStartX" />
+        <result property="mStartY" column="mStartY" />
+        <result property="mEndX" column="mEndX" />
+        <result property="mEndY" column="mEndY" />
+    </resultMap>
+
+    <insert id="insertRoute" useGeneratedKeys="true" keyProperty="route.id">
+        INSERT INTO routes(userid, mStartName, mEndName, selectedRouteType, xPath, yPath,
+        mStartX, mStartY, mEndX, mEndY)
+        VALUES (#{route.userid}, #{route.mStartName}, #{route.mEndName}, #{route.selectedRouteType},
+        #{route.xPath}, #{route.yPath},
+        #{route.mStartX}, #{route.mStartY}, #{route.mEndX}, #{route.mEndY});
+    </insert>
+
+    <select id="getAllRoute" resultType="Route">
+        SELECT * FROM routes WHERE userid = #{userid};
+    </select>
+
+    <select id="getRouteById" resultType="Route">
+        SELECT * FROM routes WHERE id = #{id};
+    </select>
+
+    <delete id="deleteRouteById">
+        DELETE FROM routes WHERE id = #{id};
+    </delete>
+
+    <select id="allRoute" resultType="Route">
+        SELECT * FROM routes
+    </select>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="qg.fangrui.boot.dao.TrendsDao">
+    <!--目的：为Dao接口方法提供SQL语句-->
+
+    <!--映射实体对象-->
+    <resultMap id="TrendsResultMap" type="qg.fangrui.boot.model.Trends">
+        <id property="id" column="id" />
+        <result property="userid" column="userid" />
+        <result property="message" column="message" />
+        <result property="sendTime" column="sendTime" />
+        <result property="photoCount" column="photoCount" />
+    </resultMap>
+
+    <insert id="insertTrends">
+        INSERT INTO trendses(id, userid, message, photoCount)
+        VALUES (#{trends.id}, #{trends.userid}, #{trends.message}, #{trends.photoCount});
+    </insert>
+
+    <select id="getTrendsById" resultType="Trends">
+        SELECT * FROM trendses WHERE id = #{id};
+    </select>
+
+    <select id="getTrendsByPage" resultType="Trends">
+        SELECT * FROM trendses WHERE userid = #{userid} limit #{start}, #{end};
+    </select>
+
+    <delete id="deleteTrends">
+        DELETE FROM trendses WHERE id = #{id}
+    </delete>
+
+    <select id="getTrendsBySendTime" resultType="Trends">
+        SELECT * FROM trendses WHERE userid=#{userid} AND sendTime &gt; #{startTime} AND sendTime &lt; #{endTime};
+    </select>
+
+    <select id="getTrendsByUseridList" resultType="Trends">
+        SELECT * FROM trendses WHERE userid IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND sendTime &gt; #{startTime} AND sendTime &lt; #{endTime};
+    </select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="qg.fangrui.boot.dao.ChatLogDao">
+    <!--目的：为Dao接口方法提供SQL语句-->
+
+    <!--映射实体对象-->
+    <resultMap id="ChatLogResultMap" type="qg.fangrui.boot.model.ChatLog">
+        <id property="id" column="id" />
+        <result property="sendId" column="sendId" />
+        <result property="receiveId" column="receiveId" />
+        <result property="content" column="content" />
+        <result property="flag" column="flag" />
+        <result property="sendTime" column="sendTime" />
+    </resultMap>
+
+    <insert id="insertChatLog">
+        INSERT INTO chatlogs(sendId, receiveId, content, sendTime)
+        VALUES (#{chatLog.sendId}, #{chatLog.receiveId}, #{chatLog.content}, #{chatLog.sendTime})
+    </insert>
+
+    <select id="getChatLog" resultType="ChatLog">
+        SELECT * FROM chatlogs WHERE receiveId=#{userid} ORDER BY sendId
+    </select>
+
+    <delete id="deleteChatLog">
+        DELETE FROM chatlogs WHERE receiveId=#{userid}
+    </delete>
+</mapper>

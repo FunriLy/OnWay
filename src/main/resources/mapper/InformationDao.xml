@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="qg.fangrui.boot.dao.InformationDao">
+    <!--目的：为Dao接口方法提供SQL语句-->
+
+    <!--映射实体对象-->
+    <resultMap id="InformationResultMap" type="qg.fangrui.boot.model.Information">
+        <id property="id" column="id" />
+        <result property="sendId" column="sendId" />
+        <result property="receiveId" column="receiveId" />
+        <result property="content" column="content" />
+        <result property="flag" column="flag" />
+        <result property="sendTime" column="sendTime" />
+        <result property="deleFlag" column="deleFlag" />
+    </resultMap>
+
+    <insert id="insertInformation">
+        INSERT INTO informations(sendId, receiveId, content, flag, deleFlag)
+        VALUES (#{info.sendId}, #{info.receiveId}, #{info.content}, #{info.flag}, #{info.deleFlag})
+    </insert>
+
+    <select id="getallInformation" resultType="Information">
+        SELECT * FROM informations WHERE receiveId = #{userid} OR sendId = #{userid} limit #{start}, #{size};
+    </select>
+
+    <delete id="deleteInformation">
+        DELETE FROM informations WHERE id = #{infoId}
+    </delete>
+
+    <update id="updateInformationReceive">
+        UPDATE informations
+        <set>
+            <if test="deleFlag != 0">
+                deleFlag = 2,
+            </if>
+            <if test="flag != 0">
+                flag = flag,
+            </if>
+        </set>
+        WHERE receiveId=#{receiveId} AND id=#{infoId}
+    </update>
+
+    <update id="updateInformationSend">
+        UPDATE informations
+        <set>
+            <if test="deleFlag != 0">
+                deleFlag = 1
+            </if>
+        </set>
+        WHERE sendId=#{sendId} AND id=#{infoId}
+    </update>
+
+    <select id="getInfoByInfoId" resultType="Information">
+        select * FROM informations WHERE id = #{infoId}
+    </select>
+
+    <update id="updateRelationInfoFlag">
+        UPDATE informations SET flag = 1 WHERE id = #{infoId};
+    </update>
+</mapper>
